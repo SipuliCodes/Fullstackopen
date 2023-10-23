@@ -22,6 +22,18 @@ const App = () => {
     setFilter(event.target.value)
   }
 
+  const handleDelete = (id) => {
+    const person = persons.filter(person => person.id === id)[0]
+    if (window.confirm(`Delete ${person.name} ?`)) {
+      personService
+        .deletePerson(id)
+        .then(() => {
+          console.log("deleted", id)
+          setPersons(persons.filter(person => person.id !== id))
+        })
+    }
+  }
+
   useEffect(() => {
     personService
       .getAll()
@@ -43,7 +55,7 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
-      })
+        })
     }
     else {
       window.alert(`${newName} is already added to phonebook`)
@@ -70,7 +82,7 @@ const App = () => {
       
       <h3>Numbers</h3>
       
-      <Person array={personsToShow} />
+      <Person array={personsToShow} handleDelete={handleDelete} />
     </div>
   )
 }
