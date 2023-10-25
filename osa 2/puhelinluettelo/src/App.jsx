@@ -10,7 +10,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
-  const [successMessage, setSuccessMessage] = useState('Added successfully')
+  const [successMessage, setSuccessMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
@@ -65,7 +66,7 @@ const App = () => {
           setSuccessMessage(`${returnedPerson.name} added successfully`)
           setTimeout(() => {
             setSuccessMessage(null)
-          }, 5000)
+          }, 2500)
         })
     }
     else {
@@ -81,8 +82,15 @@ const App = () => {
             setSuccessMessage(`${person.name}'s number changed successfully`)
             setTimeout(() => {
               setSuccessMessage(null)
-            }, 5000)
+            }, 2500)
           })
+          .catch(error => {
+            setErrorMessage(`Information of ${person.name} has already been removed from server`)
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 2500
+            )
+        })
       }
     }
   }
@@ -94,6 +102,7 @@ const App = () => {
       <h2>Phonebook</h2>
 
       <Notification message={successMessage} />
+      <Notification message={errorMessage} error={true} />
 
       <Filter filter={filter} onChange={handleFilterChange} />
       
