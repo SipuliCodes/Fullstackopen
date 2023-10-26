@@ -2,10 +2,15 @@ import { useState, useEffect } from 'react'
 import Search from './components/Search'
 import axios from 'axios'
 
-const List = ({ list }) => {
+const Button = ({ message, onClick, country }) =>
+  <button onClick={() => onClick(country)}>{message}</button>
+
+const List = ({ list, onClick }) => {
   return (
     <div>
-      {list.map(country => <div key={country.name.common}>{country.name.common}</div>)}
+      {list.map(country => <div key={country.name.common}>{country.name.common}
+        <Button message="show" onClick={onClick} country={country.name.common} />
+      </div>)}
     </div>
   )
 }
@@ -42,12 +47,19 @@ const ShowData = ({ country }) => {
   )
 }
 
-const Info = ({ list }) => {
+const Info = ({ list, onClick }) => {
   if (list.length === 1) {
     return <ShowData country={list[0]}/>
   }
-  if (list.length < 10) {
-    return <List list={list} />
+  if (list.length <= 10) {
+    return <List list={list} onClick={onClick} />
+  }
+  if (list.length > 10) {
+    return (
+      <div>
+        Too many matches, specify another filter
+      </div>
+    )
   }
 }
 
@@ -58,6 +70,11 @@ function App() {
   
   const handleCountryChange = (event) => {
     setSearchedCountry(event.target.value)
+  }
+
+  const showData = countryName => {
+    const country = filteredCountries.find(country => country.name.common === countryName)
+    setFilteredCountries([country])
   }
 
   useEffect(() => {
@@ -82,7 +99,7 @@ function App() {
         value={searchedCountry}
         onChange={handleCountryChange}
       />
-      <Info list={filteredCountries} />
+      <Info list={filteredCountries} onClick={showData} />
     </div>
   )
 }
