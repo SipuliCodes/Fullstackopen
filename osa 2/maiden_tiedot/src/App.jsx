@@ -1,72 +1,17 @@
 import { useState, useEffect } from 'react'
 import Search from './components/Search'
+import Info from './components/Info'
 import axios from 'axios'
 
-const Button = ({ message, onClick, country }) =>
-  <button onClick={() => onClick(country)}>{message}</button>
-
-const List = ({ list, onClick }) => {
-  return (
-    <div>
-      {list.map(country => <div key={country.name.common}>{country.name.common}
-        <Button message="show" onClick={onClick} country={country.name.common} />
-      </div>)}
-    </div>
-  )
-}
-
-const Languages = ({ country }) => {
-  return (
-  <div>
-  <h3>languages:</h3>
-      <ul>
-        {Object.entries(country.languages).map(([key, language]) => {
-          return(
-            <li key={key}>{language}</li>
-          )
-        })}
-      </ul>
-    </div>
-    
-  )
-}
-
-const ShowData = ({ country }) => {
-  return (
-    <div>
-      <h1>{country.name.common}</h1>
-      <div>
-        capital {country.capital}
-        <br/>
-        area {country.area}
-      </div>
-      <Languages country={country} />
-      <img src={country.flags['png']} className="flag" alt={country.flags['alt']}  />
-    </div>
-
-  )
-}
-
-const Info = ({ list, onClick }) => {
-  if (list.length === 1) {
-    return <ShowData country={list[0]}/>
-  }
-  if (list.length <= 10) {
-    return <List list={list} onClick={onClick} />
-  }
-  if (list.length > 10) {
-    return (
-      <div>
-        Too many matches, specify another filter
-      </div>
-    )
-  }
-}
+const api_key = import.meta.env.VITE_SOME_KEY
 
 function App() {
   const [searchedCountry, setSearchedCountry] = useState('')
   const [countries, setCountries] = useState([])
   const [filteredCountries, setFilteredCountries] = useState([])
+  const [weather, setWeather] = useState([])
+  const [capital, setCapital] = useState("")
+  const [filteredCountry, setFilteredCountry] = useState("")
   
   const handleCountryChange = (event) => {
     setSearchedCountry(event.target.value)
@@ -86,12 +31,40 @@ function App() {
           setCountries(response.data)
         })
     }
-    setFilteredCountries(countries.filter(country => 
-        country.name.common.toLowerCase().includes( searchedCountry ))
+    setFilteredCountries(countries.filter(country =>
+      country.name.common.toLowerCase().includes(searchedCountry))
       
     )
+    
+  
   }, [searchedCountry])
 
+  useEffect(() => {
+    if (filteredCountries.length === 1) {
+      setFilteredCountry(filteredCountries[0])
+    }
+
+  }, [filteredCountries])
+
+  useEffect(() => {
+    if (filteredCountry) {
+      axios
+        .get(`http://api.openweathermap.org/geo/1.0/direct?q=${filteredCountry.capital},${filteredCountry.name.common}&appid=${api_key} `)
+        .then(response => {
+          setCapital(response.data[0])
+        })
+    }
+  }, [filteredCountry])
+
+  useEffect(() => {
+    if (capital) {
+      axios
+        .get(`https://api.openweathermap.org/data/2.5/weather?lat=${capital.lat}&lon=${capital.lon}&units=metric&appid=${api_key}`)
+        .then(response => setWeather(response.data))
+    }
+
+  }, [capital])
+  
   return (
     <div>
       <Search
@@ -99,7 +72,7 @@ function App() {
         value={searchedCountry}
         onChange={handleCountryChange}
       />
-      <Info list={filteredCountries} onClick={showData} />
+      <Info countries={filteredCountries} onClick={showData} weather={weather} />
     </div>
   )
 }
