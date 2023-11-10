@@ -2,8 +2,8 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "Make up",
-    "author": "Noe",
-    "url": "dfffs",
-    "likes": 1100000
+    "title": "Map",
+    "author": "Nasdse",
+    "url": "dfffssadsa",
+    "likes": 11000009999
 }
