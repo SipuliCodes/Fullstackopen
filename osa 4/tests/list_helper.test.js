@@ -112,50 +112,49 @@ describe('favorite blog', () => {
 
 		})
 	})
+})
 
-	describe('most blogs', () => {
-		test('of empty list is ""', () => {
-			const result = listHelper.mostBlogs([])
-			expect(result).toEqual('')
+describe('most blogs', () => {
+	test('of empty list is ""', () => {
+		const result = listHelper.mostBlogs([])
+		expect(result).toEqual('')
+	})
+	test('when list only has one blog most equals that', () => {
+		const result = listHelper.mostBlogs(listWithOneBlog)
+		expect(result).toEqual({
+			author: 'Edsger W. Dijkstra',
+			blogs: 1
 		})
-
-		test('when list only has one blog most equals that', () => {
-			const result = listHelper.mostBlogs(listWithOneBlog)
-			expect(result).toEqual({
-				author: 'Edsger W. Dijkstra',
-				blogs: 1
-			})
+	})
+	test('of a bigger list is found', () => {
+		const result = listHelper.mostBlogs(blogs)
+		expect(result).toEqual({
+			author: 'Robert C. Martin',
+			blogs: 3
 		})
+	})
+})
 
-		test('of a bigger list is found', () => {
-			const result = listHelper.mostBlogs(blogs)
-			expect(result).toEqual({
-				author: 'Robert C. Martin',
-				blogs: 3
-			})
+
+describe('most likes', () => {
+	test('of empty list is', () => {
+		const result = listHelper.mostLikes([])
+		expect(result).toBe('')
+	})
+
+	test('when list only has one blog most likes equals that', () => {
+		const result = listHelper.mostLikes(listWithOneBlog)
+		expect(result).toEqual({
+			author: 'Edsger W. Dijkstra',
+			likes: 5
 		})
 	})
 
-	describe('most likes', () => {
-		test('of empty list is', () => {
-			const result = listHelper.mostLikes([])
-			expect(result).toBe('')
-		})
-
-		test('when list only has one blog most likes equals that', () => {
-			const result = listHelper.mostLikes(listWithOneBlog)
-			expect(result).toEqual({
-				author: 'Edsger W. Dijkstra',
-				likes: 5
-			})
-		})
-
-		test('of a bigger list is found', () => {
-			const result = listHelper.mostLikes(blogs)
-			expect(result).toEqual({
-				author: 'Edsger W. Dijkstra',
-				likes: 17
-			})
+	test('of a bigger list is found', () => {
+		const result = listHelper.mostLikes(blogs)
+		expect(result).toEqual({
+			author: 'Edsger W. Dijkstra',
+			likes: 17
 		})
 	})
 })
