@@ -29,13 +29,13 @@ const initialBlogs = [
 		title: "TDD harms architecture",
 		author: "Robert C. Martin",
 		url: "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
-		likes: 0
+		likes: 10
 	},
 	{
 		title: "Type wars",
 		author: "Robert C. Martin",
 		url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
-		likes: 2
+		likes: 10
 	}
 ]
 
