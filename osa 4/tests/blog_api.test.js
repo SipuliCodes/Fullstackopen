@@ -8,10 +8,12 @@ const Blog = require('../models/blog')
 const User = require('../models/user')
 
 
-
 beforeEach(async () => {
 	await Blog.deleteMany({})
 	await Blog.insertMany(helper.initialBlogs)
+
+	await User.deleteMany({})
+
 })
 describe('testing get', () => {
 	test('blogs are returned as json', async () => {
@@ -37,14 +39,36 @@ describe('testing get', () => {
 describe('testing post', () => {
 	test('blog is added', async () => {
 
+		const newUser = {
+			username: 'Test',
+			name: 'Test Börjesson',
+			password: 'abcdef'
+		}
+
+		const savedUser = await api
+			.post('/api/users')
+			.send(newUser)
+
+		const loginDetails = {
+			username: 'Test',
+			password: 'abcdef'
+		}
+
+		const login = await api
+			.post('/api/login')
+			.send(loginDetails)
+
+
 		const newBlog = {
 			title: 'Book of the year',
 			author: 'Writer of the year',
-			url: 'url of the year'
+			url: 'url of the year',
+			user: savedUser.body.id
 		}
 
 		await api
 			.post('/api/blogs')
+			.set('Authorization', `Bearer ${login.body.token}`)
 			.send(newBlog)
 
 		const response = await api.get('/api/blogs')
@@ -53,17 +77,57 @@ describe('testing post', () => {
 	})
 
 	test('added blog is in json format', async () => {
+		const newUser = {
+			username: 'Test',
+			name: 'Test Börjesson',
+			password: 'abcdef'
+		}
+
+		const savedUser = await api
+			.post('/api/users')
+			.send(newUser)
+
+		const loginDetails = {
+			username: 'Test',
+			password: 'abcdef'
+		}
+
+		const login = await api
+			.post('/api/login')
+			.send(loginDetails)
+
+
 		const newBlog = {
 			title: 'Book of the year',
 			author: 'Writer of the year',
-			url: 'url of the year'
+			url: 'url of the year',
+			user: savedUser.body.id
+		}
+
+		await api
+			.post('/api/blogs')
+			.set('Authorization', `Bearer ${login.body.token}`)
+			.send(newBlog)
+			.expect(201)
+			.expect('Content-Type', /application\/json/)
+	})
+
+	test('blog not added if no token', async () => {
+
+		const blogsAtStart = helper.initialBlogs
+
+		const newBlog = {
+			title: 'Book of the year',
+			author: 'Writer of the year',
+			url: 'url of the year',
+			user: '654354asdsadasd44324asd32'
 		}
 
 		await api
 			.post('/api/blogs')
 			.send(newBlog)
-			.expect(201)
-			.expect('Content-Type', /application\/json/)
+			.expect(401)
+
 	})
 })
 
@@ -87,13 +151,34 @@ describe('testing fields', () => {
 	})
 
 	test('blogs without author or title is not added', async () => {
+		const newUser = {
+			username: 'Test',
+			name: 'Test Börjesson',
+			password: 'abcdef'
+		}
+
+		const savedUser = await api
+			.post('/api/users')
+			.send(newUser)
+
+		const loginDetails = {
+			username: 'Test',
+			password: 'abcdef'
+		}
+
+		const login = await api
+			.post('/api/login')
+			.send(loginDetails)
+
 		const newBlog = {
 			url: 'url.url.url',
-			likes: 90
+			likes: 90,
+			user: savedUser.body.id
 		}
 
 		await api
 			.post('/api/blogs')
+			.set('Authorization', `Bearer ${login.body.token}`)
 			.send(newBlog)
 			.expect(400)
 	})
