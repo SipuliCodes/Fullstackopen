@@ -21,8 +21,7 @@ const create = async details => {
   return response.data
 }
 
-const like = async ( details, id ) => {
-  console.log(id)
+const like = async (details, id) => {
 
   const url = `${baseUrl}/${id}`
 

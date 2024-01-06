@@ -55,7 +55,7 @@ const App = () => {
 
   const likeBlog = async (blogObject, id) => {
     try {
-      const updatedBlog = await blogService.like(blogObject, id)
+        const updatedBlog = await blogService.like(blogObject, id)
 
       setBlogs((blogs) =>
         blogs.map((blog) =>
@@ -69,11 +69,12 @@ const App = () => {
 
   const removeBlog = async (id, details) => {
     try {
-      window.confirm(`Remove blog ${details.title} by ${details.author}`)
-      await blogService.remove(id)
-      setBlogs((blogs) =>
-        blogs.filter((blog) =>
-          blog.id !== id))
+        if (window.confirm(`Remove blog ${details.title} by ${details.author}`)) {
+            await blogService.remove(id)
+            setBlogs((blogs) =>
+                blogs.filter((blog) =>
+                    blog.id !== id))
+        }
     } catch {
     }
   }

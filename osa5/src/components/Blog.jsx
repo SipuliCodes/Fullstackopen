@@ -21,9 +21,9 @@ const Blog = ({ blog, like, name, remove }) => {
   }
 
   const likeBlog = (event) => {
-    event.preventDefault()
+      event.preventDefault()
     like({
-      user: blog.user,
+      user: blog.user.id,
       likes: blog.likes + 1,
       author: blog.author,
       title: blog.title,
@@ -37,7 +37,7 @@ const Blog = ({ blog, like, name, remove }) => {
   }
 
   return (
-    <div style={ blogStyle }>
+    <div className='blog' style={ blogStyle }>
       <div>
         {blog.title} {blog.author}
         {!visibleInfo && <button onClick={toggleVisibility}>view</button>}
