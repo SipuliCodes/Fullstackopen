@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
 
-const LoginForm = ({ login, errorMessage }) => {
+const LoginForm = ({ login }) => {
+  const notification = useSelector(state => state.notification.value)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -17,10 +19,11 @@ const LoginForm = ({ login, errorMessage }) => {
     setPassword('')
   }
 
+  console.log(notification)
   return (
     <div>
       <h2>Log in to application</h2>
-      {errorMessage && errorMessage}
+      {notification && notification}
       <form>
         <div>
                     username
