@@ -19,7 +19,6 @@ const LoginForm = ({ login }) => {
     setPassword('')
   }
 
-  console.log(notification)
   return (
     <div>
       <h2>Log in to application</h2>

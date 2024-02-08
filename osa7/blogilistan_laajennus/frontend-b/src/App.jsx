@@ -7,19 +7,18 @@ import loginService from './services/login'
 import Togglable from './components/Togglable'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteNotification, setNotification } from './reducers/notificationReducer'
+import { initializeBlogs } from './reducers/blogReducer'
 
 
-const App = () => {
+const App = () => {  
   const dispatch = useDispatch()
   const notification = useSelector(state => state.notification.value)
+  const blogs = useSelector(state => state.blog)
   const noteFormRef = useRef()
-  const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-
+    
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )
+    dispatch(initializeBlogs())
   }, [])
 
   useEffect(() => {
@@ -54,43 +53,8 @@ const App = () => {
       }, 2000)
     }
   }
-
-  const likeBlog = async (blogObject, id) => {
-    try {
-        const updatedBlog = await blogService.like(blogObject, id)
-
-      setBlogs((blogs) =>
-        blogs.map((blog) =>
-          blog.id === updatedBlog.id ? updatedBlog : blog
-        ))
-
-    } catch (exception) {
-
-    }
-  }
-
-  const removeBlog = async (id, details) => {
-    try {
-        if (window.confirm(`Remove blog ${details.title} by ${details.author}`)) {
-            await blogService.remove(id)
-            setBlogs((blogs) =>
-                blogs.filter((blog) =>
-                    blog.id !== id))
-        }
-    } catch {
-    }
-  }
-
-  const addBlog = async (blogObject) => {
-    try {
-      noteFormRef.current.toggleVisibility()
-      const blog = await blogService.create(blogObject)
-      setBlogs(blogs.concat(blog))
-      dispatch(setNotification((`a new blog ${blog.title} by ${blog.author} added`)))
-      setTimeout(() => { dispatch(deleteNotification()) }, 2000)
-    } catch (exception) {
-    }
-  }
+  
+  console.log(blogs)
 
   if (user === null) {
     return (
@@ -109,25 +73,15 @@ const App = () => {
       <p>{user.name} logged in<button onClick={handleLogout}>logout</button></p>
       <Togglable buttonLabel="create new blog" ref={noteFormRef}>
         <BlogForm
-          createBlog={addBlog}
           user={user}
         />
       </Togglable>
 
-      {blogs.sort((blogA, blogB) => {
-        if (blogA.likes > blogB.likes) {
-          return -1
-        } else if (blogA.likes < blogB.likes) {
-          return 1
-        }
-        return 0
-      }).map(blog =>
+      {blogs.map(blog =>
         <Blog
           key={blog.id}
           blog={blog}
-          like={likeBlog}
           name={user.name}
-          remove={removeBlog}
         />)}
 
     </div>

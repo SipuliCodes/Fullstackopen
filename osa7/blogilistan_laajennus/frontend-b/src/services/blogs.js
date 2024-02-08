@@ -22,7 +22,6 @@ const create = async details => {
 }
 
 const like = async (details, id) => {
-
   const url = `${baseUrl}/${id}`
 
   const response = await axios.put(url, details)
