@@ -1,19 +1,17 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { loginUser } from '../reducers/userReducer'
 
-const LoginForm = ({ login }) => {
+const LoginForm = () => {
   const notification = useSelector(state => state.notification.value)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const dispatch = useDispatch()
 
-  const loginUser = (event) => {
+  const login = (event) => {
     event.preventDefault()
-
-    login({
-      username: username,
-      password: password
-    })
+    dispatch(loginUser({ username: username, password: password}))
 
     setUsername('')
     setPassword('')
@@ -44,7 +42,7 @@ const LoginForm = ({ login }) => {
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>
-        <button onClick={loginUser} id='login-button' type="submit">login</button>
+        <button onClick={login} id='login-button' type="submit">login</button>
       </form>
     </div>
   )
