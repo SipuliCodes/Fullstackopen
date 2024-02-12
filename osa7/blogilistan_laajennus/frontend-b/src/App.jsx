@@ -1,23 +1,24 @@
-import { useEffect, useRef } from 'react'
-import LoginForm from './components/LoginForm'
-import BlogForm from './components/BlogForm'
-import Blog from './components/Blog'
-import Togglable from './components/Togglable'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUser, setUser } from './reducers/userReducer'
+import { initializeUsers } from './reducers/usersReducer'
+import { Routes, Route } from 'react-router-dom'
+
+import LoginForm from './components/LoginForm'
+import Users from './components/Users'
+import Home from './components/Home'
 
 
 const App = () => {  
   const dispatch = useDispatch()
   const notification = useSelector(state => state.notification.value)
-  const blogs = useSelector(state => state.blog)
-  const blogFormRef = useRef()
   const user = useSelector(state => state.user)
     
   useEffect(() => {
     dispatch(initializeBlogs())
     dispatch(initializeUser())
+    dispatch(initializeUsers())
   }, [])
 
   const handleLogout = async (event) => {
@@ -35,20 +36,14 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-
       {notification && notification}
-
-      <p>{user.name} logged in<button onClick={handleLogout}>logout</button></p>
-      <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-        <BlogForm/>
-      </Togglable>
-
-      {blogs.map(blog =>
-        <Blog
-          key={blog.id}
-          blog={blog}
-          name={user.name}
-        />)}
+      <p>{user.name} logged in</p>
+      <button onClick={handleLogout}>logout</button>
+      <Routes>
+        <Route path="/users" element={<Users />} />
+        <Route path="/" element={<Home />} />
+      </Routes>
+  
 
     </div>
   )
