@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux"
-import User from "./User"
+import { Link } from "react-router-dom"
 
 
 const Users = () => {
@@ -16,7 +16,7 @@ const Users = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map(user => <User key={user.id} user={user} />)}
+          {users.map(user => <tr key={user.id}><td> <Link to={user.id}> {user.name}</Link></td><td>{user.blogs.length}</td></tr>)}
         </tbody>
       </table>
     </div>

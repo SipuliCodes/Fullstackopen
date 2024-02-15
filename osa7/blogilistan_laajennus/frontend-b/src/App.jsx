@@ -4,6 +4,7 @@ import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUser, setUser } from './reducers/userReducer'
 import { initializeUsers } from './reducers/usersReducer'
 import { Routes, Route } from 'react-router-dom'
+import User from './components/User'
 
 import LoginForm from './components/LoginForm'
 import Users from './components/Users'
@@ -41,6 +42,7 @@ const App = () => {
       <button onClick={handleLogout}>logout</button>
       <Routes>
         <Route path="/users" element={<Users />} />
+        <Route path="/users/:id" element={<User />} />
         <Route path="/" element={<Home />} />
       </Routes>
   
