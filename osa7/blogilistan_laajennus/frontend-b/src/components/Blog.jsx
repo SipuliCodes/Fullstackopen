@@ -1,19 +1,13 @@
-import { useState } from 'react'
-import PropTypes from 'prop-types'
+import { useParams } from 'react-router-dom'
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
-const Blog = ({ blog, name }) => {
-  const [visibleInfo, setVisibleInfo] = useState(false)
+const Blog = () => {
   const dispatch = useDispatch()
-
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
-  }
+  const user = useSelector(state => state.user)
+  const id = useParams().id
+  const blog = useSelector(state => state.blog.find(blog => blog.id === id))
+  console.log(blog)
 
   const remove = (event) => {
     event.preventDefault()
@@ -36,38 +30,26 @@ const Blog = ({ blog, name }) => {
 
   }
 
-  const toggleVisibility = () => {
-    setVisibleInfo(!visibleInfo)
+  if (!blog) {
+    return null
   }
 
   return (
-    <div className='blog' style={ blogStyle }>
+    <div className='blog'>
       <div>
-        {blog.title} {blog.author}
-        {!visibleInfo && <button onClick={toggleVisibility}>view</button>}
-        {visibleInfo && <button onClick={toggleVisibility}>hide</button>}
+        <h1>{blog.title}</h1>
       </div>
-      {visibleInfo &&
-                <div>
-                  {blog.url}
-                  <br />
-                    likes {blog.likes} <button onClick={like}>like</button>
-                  <br />
-                  {blog.user.name}
-                  {name === blog.user.name &&
-                        <div>
-                          <button onClick={remove}>remove</button>
-                        </div>
-                  }
-                </div>
-      }
-
+      <div>
+        <a href={blog.url}>{blog.url}</a>
+        <br></br>
+        {blog.likes} likes <button onClick={like}>like</button>
+        <br></br>
+        added by {blog.user.name}
+        <br></br>
+        {user.name === blog.user.name && <button onClick={remove}>remove</button>}
+      </div>
     </div>
   )
-}
-
-Blog.propTypes = {
-  name: PropTypes.string.isRequired,
 }
 
 export default Blog
