@@ -60,6 +60,13 @@ export const likeBlog = (blogObject, id) => {
   }
 }
 
+export const commentBlog = (blogObject, id) => {
+  return async dispatch => {
+    const updatedBlog = await blogService.comment(blogObject, id)
+    dispatch(updateBlog(updatedBlog))
+  }
+}
+
 export const removeBlog = (blogObject) => {
   return async dispatch => {
     if (window.confirm(`Remove blog ${blogObject.title} by ${blogObject.author}`)) {

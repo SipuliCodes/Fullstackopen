@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
+import ListGroup from 'react-bootstrap/ListGroup'
 
 const User = () => {
   const id = useParams().id
@@ -12,9 +13,9 @@ const User = () => {
     <div>
       <h2>{user.name}</h2>
       <h3>added blogs</h3>
-      <ul>
-        {user.blogs.map(blog => <li key={blog.id}>{blog.title}</li>)}
-      </ul>
+      <ListGroup >
+        {user.blogs.map(blog => <ListGroup.Item key={blog.id}>{blog.title}</ListGroup.Item>)}
+      </ListGroup>
     </div>
   )
 }

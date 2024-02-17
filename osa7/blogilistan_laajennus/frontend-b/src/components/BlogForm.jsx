@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
 
-const BlogForm = () => {
+const BlogForm = ({blogFormRef}) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -19,6 +19,7 @@ const BlogForm = () => {
     setTitle('')
     setAuthor('')
     setUrl('')
+    blogFormRef.current.toggleVisibility()
   }
 
   return (

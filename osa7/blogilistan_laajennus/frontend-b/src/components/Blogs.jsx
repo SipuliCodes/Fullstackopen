@@ -1,19 +1,22 @@
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
+import Table from 'react-bootstrap/Table'
+import Nav from 'react-bootstrap/Nav'
 
 const Blogs = () => {
   const blogs = useSelector(state => state.blog)
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
-  }
-
   return (
-    blogs.map(blog => <div key={blog.id} style={blogStyle}><Link  to={ `blogs/${blog.id}` }>{blog.title}</Link> </div>)
+    <Table striped bordered hover variant="primary">
+      <thead>
+        <tr>
+          <th>Blogs</th>
+        </tr>
+      </thead>
+      <tbody>
+        {blogs.map(blog => <tr key={blog.id}> <td><Nav.Link as={Link} to={`blogs/${blog.id}`}>{blog.title}</Nav.Link></td> </tr>)}
+      </tbody>
+    </Table>
   )
 }
 

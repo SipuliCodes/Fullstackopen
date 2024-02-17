@@ -28,6 +28,13 @@ const like = async (details, id) => {
   return response.data
 }
 
+const comment = async (comment, id) => {
+  const url = `${baseUrl}/${id}/comments`
+
+  const response = await axios.post(url, comment)
+  return response.data
+}
+
 const remove = async (id) => {
   const config = {
     headers: { Authorization: token }
@@ -39,4 +46,4 @@ const remove = async (id) => {
   return response.data
 }
 
-export default { getAll, create, setToken, like, remove }
+export default { getAll, create, setToken, like,comment,  remove }

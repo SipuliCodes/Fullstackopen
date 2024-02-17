@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginUser } from '../reducers/userReducer'
+
+import Alert from 'react-bootstrap/Alert'
 
 const LoginForm = () => {
   const notification = useSelector(state => state.notification.value)
@@ -20,7 +21,7 @@ const LoginForm = () => {
   return (
     <div>
       <h2>Log in to application</h2>
-      {notification && notification}
+      {notification && <Alert variant="danger">{notification}</Alert>}
       <form>
         <div>
                     username

@@ -12,6 +12,8 @@ import Home from './components/Home'
 import Blog from "./components/Blog"
 import Navigation from './components/navigation'
 
+import Alert from 'react-bootstrap/Alert'
+
 
 const App = () => {  
   const dispatch = useDispatch()
@@ -33,8 +35,8 @@ const App = () => {
   return (
     <div>
       <Navigation />
-      <h2>blogs</h2>
-      {notification && notification}
+      <h2>blog app</h2>
+      {notification && <Alert variant="success">{notification}</Alert>}
       <Routes>
         <Route path="/users" element={<Users />} />
         <Route path="/users/:id" element={<User />} />

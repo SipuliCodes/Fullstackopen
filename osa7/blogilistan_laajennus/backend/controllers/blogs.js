@@ -1,5 +1,7 @@
 const router = require('express').Router()
+const { request } = require('express')
 const Blog = require('../models/blog')
+const mongoose = require('mongoose')
 
 const { userExtractor } = require('../utils/middleware')
 
@@ -61,6 +63,21 @@ router.delete('/:id', userExtractor, async (request, response) => {
   await blog.remove()
 
   response.status(204).end()
+})
+
+router.post('/:id/comments', async (request, response) => {
+  const blog = await Blog.findById(request.params.id)
+  const comment = request.body.comment
+  const id = new mongoose.mongo.ObjectId()
+
+  blog.comments.push({
+    comment: comment,
+    id: id
+  })
+
+  await blog.populate('user', { username: 1, name: 1 })
+  await blog.save()
+  response.json(blog)
 })
 
 module.exports = router
