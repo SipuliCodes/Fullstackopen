@@ -2,7 +2,7 @@ import { useQuery } from "@apollo/client"
 import { ALL_AUTHORS } from "../queries"
 import BirthyearForm from "./BirthyearForm"
 
-const Authors = () => {
+const Authors = ({token}) => {
   const result = useQuery(ALL_AUTHORS)
 
   if (result.loading) {
@@ -29,7 +29,7 @@ const Authors = () => {
             </tr>)}
         </tbody>
       </table>
-      <BirthyearForm authors={result.data.allAuthors}/>
+      {token && <BirthyearForm authors={result.data.allAuthors} />}
     </div>
   )
 }
