@@ -1,10 +1,11 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import Authors from "../components/Authors"
 import Books from "../components/Books"
 import BookForm from "../components/BookForm"
 import LoginForm from "../components/LoginForm"
 import { useApolloClient } from "@apollo/client"
+import RecommendedBooks from "../components/RecommendedBooks"
 
 
 
@@ -12,6 +13,12 @@ const App = () => {
   const [token, setToken] = useState(null)
   const [site, setSite] = useState("authors")
   const client = useApolloClient()
+  useEffect(() => {
+    const localToken = localStorage.getItem("library-user-token")
+    if (localToken) {
+      setToken(localToken)
+    }
+  }, [])
 
   const switchSite = (site) => {
     setSite(site)
@@ -29,8 +36,9 @@ const App = () => {
       <button onClick={() => switchSite("books")}>books</button>
       {token &&
         <>
-          <button onClick={() => switchSite("add_book")}>add book</button>
-        <button onClick={logout}>logout</button>
+        <button onClick={() => switchSite("add_book")}>add book</button>
+        <button onClick={() => switchSite("recommend")}>recommend</button>
+          <button onClick={logout}>logout</button>
         </>
       }
       {!token && <button onClick={() => switchSite("login")}>login</button>}
@@ -39,6 +47,7 @@ const App = () => {
       {site === "books" && <Books />}
       {site === "add_book" && <BookForm />}
       {site === "login" && <LoginForm setToken={setToken} switchSite={switchSite} />}
+      {site === "recommend" && <RecommendedBooks />}
     </div>
   )
 }
