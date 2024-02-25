@@ -28,13 +28,6 @@ const resolvers = {
     }
   },
 
-  Author: {
-    bookCount: async (root) => {
-      const author = await Author.findOne({name: root.name})
-      return (await Book.find({ author: author._id })).length
-    }
-  },
-
   Mutation: {
     addBook: async (root, args, {currentUser}) => {
 
@@ -46,9 +39,9 @@ const resolvers = {
         })
       }
 
-      let author = await Author.findOne({ name: args.author })
+      let author = await Author.findOneAndUpdate({ name: args.author }, { $inc: {bookCount: 1}}, {new: true})
       if (!author) {
-        author = new Author({ name: args.author })
+        author = new Author({ name: args.author, bookCount: 1 })
         try {
           await author.save()
         } catch (error) {
