@@ -1,26 +1,16 @@
-interface ContentProps {
-  content: Course[];
+import Part from "./Part";
+import { CoursePart } from "../App";
+
+interface ContentTypes {
+  courseParts: CoursePart[];
 }
 
-interface Course {
-  name: string;
-  exerciseCount: number;
-}
-
-const Content = (props: ContentProps) => {
+const Content = ({courseParts}:ContentTypes) => {
   return (
     <div>
-      <p>
-        {props.content[0].name} {props.content[0].exerciseCount}
-      </p>
-      <p>
-        {props.content[1].name} {props.content[1].exerciseCount}
-      </p>
-      <p>
-        {props.content[2].name} {props.content[2].exerciseCount}
-      </p>
+      {courseParts.map(course => <Part key={course.name} part={course} />)}
     </div>
-  )
-}
+  );
+};
 
-export default Content
+export default Content;

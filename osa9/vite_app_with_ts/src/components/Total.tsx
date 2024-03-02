@@ -10,4 +10,4 @@ const Total = (props: TotalProps) => {
   );
 };
 
-export default Total
+export default Total;
