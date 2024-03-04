@@ -1,4 +1,4 @@
-import { NewPatient, Gender } from "./types";
+import { NewPatient, Gender, Entry } from "./types";
 
 const toNewPatient = (object: unknown): NewPatient => {
   if (!object || typeof object !== 'object') {
@@ -6,13 +6,15 @@ const toNewPatient = (object: unknown): NewPatient => {
   }
 
   if ('name' in object && 'dateOfBirth' in object && 'ssn' in object && 'gender' in object && 'occupation' in object) {
-    console.log(object);
+    const emptyEntryList: Entry[] = [];
+    
     const newPatient: NewPatient = {
       name: parseName(object.name),
       dateOfBirth: parseDateOfBirth(object.dateOfBirth),
       ssn: parseSsn(object.ssn),
       gender: parseGender(object.gender),
-      occupation: parseOccupation(object.occupation)
+      occupation: parseOccupation(object.occupation),
+      entries: emptyEntryList
     };
 
     return newPatient;
