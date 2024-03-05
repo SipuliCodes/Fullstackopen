@@ -6,6 +6,9 @@ import { useParams } from "react-router-dom";
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from "@mui/icons-material/Male";
 
+import './index.css';
+import EntryDetails from "./EntryDetails";
+
 const PatientPage = () => {
   const { id } = useParams < { id?: string }>();
   const [patient, setPatient] = useState<Patient>();
@@ -34,16 +37,8 @@ const PatientPage = () => {
       <br></br>
         occupation: {patient.occupation}</p>
       <h3>entries</h3>
-      {patient.entries.map(entry => {
-        return (
-          <div key={entry.id}>
-            {entry.date} {entry.description}
-            <ul>
-              {entry.diagnosisCodes && entry.diagnosisCodes.map(code => <li key={code}>{code} { diagnoses?.find(diagnose => diagnose.code === code)?.name }</li> )}
-            </ul>
-          </div>
-        );
-      })}
+      {patient.entries.map(entry => <EntryDetails key={entry.id} entry={entry} /> )
+      }
     </div>
   );
 };
