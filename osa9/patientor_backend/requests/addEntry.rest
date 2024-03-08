@@ -1,0 +1,14 @@
+POST http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries
+Content-Type: application/json
+
+{
+  "description": "burana",
+  "date": "2024-01-29",
+  "specialist": "Onion",
+  "type": "OccupationalHealthcare",
+  "employerName": "FBI",
+  "sickLeave": {
+    "startDate": "2024-01-29",
+    "endDate": "2024-02-05"
+  }
+}

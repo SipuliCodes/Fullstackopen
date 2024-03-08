@@ -1,5 +1,5 @@
 import data from "../../data/patients";
-import { NewPatient, Patient, NonSensitivePatient } from "../types";
+import { NewPatient, Patient, NonSensitivePatient, EntryWithoutId, Entry } from "../types";
 import { v1 as uuid } from 'uuid';
 
 const patients: Patient[] = data;
@@ -28,4 +28,19 @@ const getPatient = (id: string): Patient | undefined => {
   return patients.find(patient => patient.id === id);
 };
 
-export default { getNonSensitivePatient, addPatient, getPatient };
+const addEntry = (details: EntryWithoutId, id: string): Entry => {
+  const newEntry = {
+    id: uuid(),
+    ...details
+  };
+
+  const patient: Patient | undefined = data.find(p => p.id === id);
+  if (patient) {
+    patient.entries.push(newEntry);
+    data.map(p => p.id === id ? patient : p);
+    return newEntry;
+  }
+  throw new Error('Adding entry failed');
+};
+
+export default { getNonSensitivePatient, addPatient, getPatient, addEntry };

@@ -1,4 +1,5 @@
-import { NewPatient, Gender, Entry } from "./types";
+import { NewPatient, Gender, Entry } from "../types";
+import { isDate, isString } from "./typeHelpers";
 
 const toNewPatient = (object: unknown): NewPatient => {
   if (!object || typeof object !== 'object') {
@@ -23,9 +24,7 @@ const toNewPatient = (object: unknown): NewPatient => {
   throw new Error('Incorrect data: some fields are missing');
 };
 
-const isString = (text: unknown): text is string => {
-  return typeof text === 'string' || text instanceof String;
-};
+export default toNewPatient;
 
 const parseName = (name: unknown): string => {
   if (!isString(name)) {
@@ -33,10 +32,6 @@ const parseName = (name: unknown): string => {
   }
 
   return name;
-};
-
-const isDate = (date: string): boolean => {
-  return Boolean(Date.parse(date));
 };
 
 const parseDateOfBirth = (dateOfBirth: unknown): string => {
@@ -74,5 +69,3 @@ const parseOccupation = (occupation: unknown): string => {
 
   return occupation;
 };
-
-export default toNewPatient;
