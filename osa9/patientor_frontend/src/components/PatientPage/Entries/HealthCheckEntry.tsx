@@ -1,4 +1,4 @@
-import { HealthCheckEntry } from "../../types";
+import { HealthCheckEntry } from "../../../types";
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import HeartBrokenIcon from '@mui/icons-material/HeartBroken';

@@ -8,11 +8,15 @@ import MaleIcon from "@mui/icons-material/Male";
 
 import './index.css';
 import EntryDetails from "./EntryDetails";
+import HealthCheckEntryForm from "./EntryForms/HealthCheckEntryForm";
+import HospitalForm from "./EntryForms/HospitalForm";
+import OccupationalForm from "./EntryForms/OccupationalForm";
 
 const PatientPage = () => {
-  const { id } = useParams < { id?: string }>();
+  const { id } = useParams < { id: string }>();
   const [patient, setPatient] = useState<Patient>();
   const [diagnoses, setDiagnoses] = useState<Diagnosis[]>();
+  const [form, setForm] = useState('');
 
   useEffect(() => {
     diagnoseService.getAll()
@@ -26,9 +30,13 @@ const PatientPage = () => {
     }
   }, [id]);
 
-  if (!patient) {
+  if (!patient || !id || !diagnoses) {
     return null;
   }
+
+  const switchForm = (form: string) => {
+    setForm(form);
+  };
 
   return (
     <div>
@@ -36,6 +44,8 @@ const PatientPage = () => {
       <p>ssn: {patient.ssn}
       <br></br>
         occupation: {patient.occupation}</p>
+      <button onClick={() => switchForm('healthcheck')}>Add Healthcheck entry</button><button onClick={() => switchForm('hospital')}>Add Hospital entry</button><button onClick={() => switchForm('occupational')}>Add Occupational entry</button>
+      {form === 'healthcheck' ? <HealthCheckEntryForm id={id} cancel={switchForm} diagnoses={diagnoses} /> : form === 'hospital' ? <HospitalForm id={id} cancel={switchForm} diagnoses={diagnoses} />: form === 'occupational' ? <OccupationalForm id={id} cancel={switchForm} diagnoses={diagnoses}/> : null }
       <h3>entries</h3>
       {patient.entries.map(entry => <EntryDetails key={entry.id} entry={entry} /> )
       }

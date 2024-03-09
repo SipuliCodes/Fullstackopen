@@ -1,4 +1,4 @@
-import { HospitalEntry } from "../../types";
+import { HospitalEntry } from "../../../types";
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 
 interface Props {

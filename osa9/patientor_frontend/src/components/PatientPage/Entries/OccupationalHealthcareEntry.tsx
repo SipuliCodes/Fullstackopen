@@ -1,4 +1,4 @@
-import { OccupationalHealthcareEntry } from "../../types";
+import { OccupationalHealthcareEntry } from "../../../types";
 import WorkIcon from '@mui/icons-material/Work';
 
 
